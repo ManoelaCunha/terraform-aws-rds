@@ -29,10 +29,15 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
       - name: Terraform Apply
         run: |
-          terraform apply -auto-approve \
-            -var "region=${{ secrets.AWS_REGION }}" \
+          terraform apply -auto-approve tfplan \
             -var "db_username=${{ secrets.DATABASE_USER }}" \
             -var "db_password=${{ secrets.DATABASE_PASS }}" \
             -var "db_name=${{ secrets.DATABASE_NAME }}"
